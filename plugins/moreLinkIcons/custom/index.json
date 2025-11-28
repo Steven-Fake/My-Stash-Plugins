@@ -1,0 +1,136 @@
+[
+    {
+        "name": "bilibili",
+        "icon": "bilibili.svg",
+        "addresses": [
+            "bilibili.com"
+        ],
+        "regex": "^https?:\/\/space.bilibili.com\/(.*?)\/?"
+    },
+    {
+        "name": "bluesky",
+        "icon": "bluesky.svg",
+        "addresses": [
+            "bsky.app"
+        ],
+        "regex": "^https?:\/\/(?:www\\.)?bsky.app\/profile\/(.*?)\/"
+    },
+    {
+        "name": "facebook",
+        "icon": "facebook.svg",
+        "addresses": [
+            "facebook.com",
+            "fb.com"
+        ]
+    },
+    {
+        "name": "fansly",
+        "icon": "fansly.svg",
+        "addresses": [
+            "fansly.com"
+        ]
+    },
+    {
+        "name": "imdb",
+        "icon": "imdb.svg",
+        "addresses": [
+            "imdb.com"
+        ]
+    },
+    {
+        "name": "instagram",
+        "icon": "instagram.svg",
+        "addresses": [
+            "instagram.com"
+        ]
+    },
+    {
+        "name": "linktree",
+        "icon": "linktree.svg",
+        "addresses": [
+            "linktr.ee"
+        ]
+    },
+    {
+        "name": "onlyfans",
+        "icon": "onlyfans.svg",
+        "addresses": [
+            "onlyfans.com"
+        ]
+    },
+    {
+        "name": "patreon",
+        "icon": "patreon.svg",
+        "addresses": [
+            "patreon.com"
+        ]
+    },
+    {
+        "name": "reddit",
+        "icon": "reddit.svg",
+        "addresses": [
+            "reddit.com"
+        ]
+    },
+    {
+        "name": "telegram",
+        "icon": "telegram.svg",
+        "addresses": [
+            "t.me",
+            "telegram.me",
+            "telegram.org"
+        ]
+    },
+    {
+        "name": "tiktok",
+        "icon": "tiktok.svg",
+        "addresses": [
+            "tiktok.com"
+        ]
+    },
+    {
+        "name": "tumblr",
+        "icon": "tumblr.svg",
+        "addresses": [
+            "tumblr.com"
+        ],
+        "regex": "^https?\\://(.+)tumblr.com/"
+    },
+    {
+        "name": "twitch",
+        "icon": "twitch.svg",
+        "addresses": [
+            "twitch.tv"
+        ]
+    },
+    {
+        "name": "vk",
+        "icon": "vk.svg",
+        "addresses": [
+            "vk.com"
+        ]
+    },
+    {
+        "name": "weibo",
+        "icon": "weibo.svg",
+        "addresses": [
+            "weibo.com"
+        ],
+        "regex": "^https?://weibo.com/.*?/([a-zA-Z0-9_]+)(?:\\?.*)?$"
+    },
+    {
+        "name": "twitter",
+        "icon": "x.svg",
+        "addresses": [
+            "twitter.com",
+            "x.com"
+        ]
+    },
+    {
+        "name": "youtube",
+        "icon": "youtube.svg",
+        "addresses": [
+            "youtube.com"
+        ]
+    }
+]
