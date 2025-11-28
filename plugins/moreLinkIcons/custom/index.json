@@ -1,5 +1,12 @@
 [
     {
+        "name": "afdian",
+        "icon": "afdian.svg",
+        "addresses": [
+            "afdian.com"
+        ]
+    },
+    {
         "name": "bilibili",
         "icon": "bilibili.svg",
         "addresses": [
@@ -79,6 +86,14 @@
         "addresses": [
             "reddit.com"
         ]
+    },
+    {
+        "name": "taobao",
+        "icon": "taobao.svg",
+        "addresses": [
+            "taobao.com"
+        ],
+        "regex": "^https?://(.*?).taobao.com/(.*?)/?"
     },
     {
         "name": "telegram",

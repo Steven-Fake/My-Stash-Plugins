@@ -11,6 +11,10 @@
             fill: currentColor;
         }
 
+        &.afdian {
+            color: #946CE6;
+        }
+
         &.bilibili {
             color: #00A1D6;
         }
@@ -53,6 +57,10 @@
 
         &.reddit {
             color: #FF4500;
+        }
+
+        &.taobao {
+            color: #E94F20;
         }
 
         &.telegram {

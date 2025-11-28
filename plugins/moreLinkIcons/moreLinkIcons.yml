@@ -1,6 +1,6 @@
 name: More Link Icons
 description: Add more link icons for performers. Modified from [External Links Enhanced](https://github.com/stashapp/CommunityScripts/tree/main/plugins/externalLinksEnhanced)
-version: 0.1.0
+version: 0.1.2
 ui:
     javascript:
         - moreLinkIcons.js
