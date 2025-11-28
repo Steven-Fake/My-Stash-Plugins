@@ -19,6 +19,10 @@
             color: #1185FE;
         }
 
+        &.dmm {
+            color: #000000;
+        }
+
         &.facebook {
             color: #0866FF;
         }
@@ -73,6 +77,10 @@
 
         &.weibo {
             color: #E6162D;
+        }
+
+        &.wikipedia {
+            color: #000000;
         }
 
         &.twitter {

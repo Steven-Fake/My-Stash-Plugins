@@ -16,6 +16,14 @@
         "regex": "^https?:\/\/(?:www\\.)?bsky.app\/profile\/(.*?)\/"
     },
     {
+        "name": "dmm",
+        "icon": "dmm.svg",
+        "addresses": [
+            "dmm.co.jp"
+        ],
+        "regex": "^https?://actress.dmm.co.jp/(.*?)/?"
+    },
+    {
         "name": "facebook",
         "icon": "facebook.svg",
         "addresses": [
@@ -117,6 +125,14 @@
             "weibo.com"
         ],
         "regex": "^https?://weibo.com/.*?/([a-zA-Z0-9_]+)(?:\\?.*)?$"
+    },
+    {
+        "name": "wikipedia",
+        "icon": "wikipedia.svg",
+        "addresses": [
+            "wikipedia.org"
+        ],
+        "regex": "^https?://(?:[a-z]{2,3}.)?wikipedia.org/wiki/(.*?)/?"
     },
     {
         "name": "twitter",
