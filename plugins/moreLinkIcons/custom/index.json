@@ -23,6 +23,14 @@
         "regex": "^https?:\/\/(?:www\\.)?bsky.app\/profile\/(.*?)\/"
     },
     {
+        "name": "discord",
+        "icon": "discord.svg",
+        "addresses": [
+            "discord.com",
+            "discord.gg"
+        ]
+    },
+    {
         "name": "dmm",
         "icon": "dmm.svg",
         "addresses": [
@@ -79,6 +87,14 @@
         "addresses": [
             "patreon.com"
         ]
+    },
+    {
+        "name": "pornhub",
+        "icon": "pornhub.svg",
+        "addresses": [
+            "pornhub.com"
+        ],
+        "regex": "^https?://(.*?).pornhub.com/(.*?)/?"
     },
     {
         "name": "reddit",
@@ -148,6 +164,14 @@
             "wikipedia.org"
         ],
         "regex": "^https?://(?:[a-z]{2,3}.)?wikipedia.org/wiki/(.*?)/?"
+    },
+    {
+        "name": "wordpress",
+        "icon": "wordpress.svg",
+        "addresses": [
+            "misskon.com",
+            "wp.com"
+        ]
     },
     {
         "name": "twitter",

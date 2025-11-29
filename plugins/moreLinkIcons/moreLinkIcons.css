@@ -23,6 +23,10 @@
             color: #1185FE;
         }
 
+        &.discord {
+            color: #5865F2;
+        }
+
         &.dmm {
             color: #000000;
         }
@@ -53,6 +57,10 @@
 
         &.patreon {
             color: #000000;
+        }
+
+        &.pornhub {
+            color: #FF9900;
         }
 
         &.reddit {
@@ -89,6 +97,10 @@
 
         &.wikipedia {
             color: #000000;
+        }
+
+        &.wordpress {
+            color: #21759B;
         }
 
         &.twitter {
