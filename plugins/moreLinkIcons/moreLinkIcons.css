@@ -39,6 +39,14 @@
             color: #2699F7;
         }
 
+        &.fantia {
+            color: #FFFFFF;
+        }
+
+        &.gallery-epic {
+            color: unset;
+        }
+
         &.imdb {
             color: #F5C518;
         }

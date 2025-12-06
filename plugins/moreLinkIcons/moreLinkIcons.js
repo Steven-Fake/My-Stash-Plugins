@@ -45,6 +45,9 @@
         if (file.includes(".svg")) {
             return await SvgUtils.loadSvgIcon(file);
         }
+        if (typeof file === "string" && /\.(png|jpg|jpeg|gif|webp)$/i.test(file)) {
+            return file;
+        }
         return file;
     };
     var IconUtils = {

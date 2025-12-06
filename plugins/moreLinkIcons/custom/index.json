@@ -54,6 +54,20 @@
         ]
     },
     {
+        "name": "fantia",
+        "icon": "fantia.svg",
+        "addresses": [
+            "fantia.jp"
+        ]
+    },
+    {
+        "name": "gallery-epic",
+        "icon": "gallery-epic.png",
+        "addresses": [
+            "galleryepic.com"
+        ]
+    },
+    {
         "name": "imdb",
         "icon": "imdb.svg",
         "addresses": [
@@ -124,7 +138,8 @@
         "name": "tiktok",
         "icon": "tiktok.svg",
         "addresses": [
-            "tiktok.com"
+            "tiktok.com",
+            "douyin.com"
         ]
     },
     {
@@ -155,7 +170,7 @@
         "addresses": [
             "weibo.com"
         ],
-        "regex": "^https?://weibo.com/.*?/([a-zA-Z0-9_]+)(?:\\?.*)?$"
+        "regex": "^https?://(www.)?weibo.com/u/([a-zA-Z0-9_]+)/?$"
     },
     {
         "name": "wikipedia",
