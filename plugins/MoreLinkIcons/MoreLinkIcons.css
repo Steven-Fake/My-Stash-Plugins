@@ -1,0 +1,122 @@
+.external-links-button {
+    .btn.link {
+        width: 36px;
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+
+        svg path {
+            fill: currentColor;
+        }
+
+        &.afdian {
+            color: #946CE6;
+        }
+
+        &.bilibili {
+            color: #00A1D6;
+        }
+
+        &.bluesky {
+            color: #1185FE;
+        }
+
+        &.discord {
+            color: #5865F2;
+        }
+
+        &.dmm {
+            color: #000000;
+        }
+
+        &.facebook {
+            color: #0866FF;
+        }
+
+        &.fansly {
+            color: #2699F7;
+        }
+
+        &.fantia {
+            color: #FFFFFF;
+        }
+
+        &.gallery-epic {
+            color: unset;
+        }
+
+        &.imdb {
+            color: #F5C518;
+        }
+
+        &.instagram {
+            color: #FF0069;
+        }
+
+        &.linktree {
+            color: #43E55E;
+        }
+
+        &.onlyfans {
+            color: #00AFF0;
+        }
+
+        &.patreon {
+            color: #000000;
+        }
+
+        &.pornhub {
+            color: #FF9900;
+        }
+
+        &.reddit {
+            color: #FF4500;
+        }
+
+        &.taobao {
+            color: #E94F20;
+        }
+
+        &.telegram {
+            color: #26A5E4;
+        }
+
+        &.tiktok {
+            color: #000000;
+        }
+
+        &.tumblr {
+            color: #36465D;
+        }
+
+        &.twitch {
+            color: #9146FF;
+        }
+
+        &.vk {
+            color: #0077FF;
+        }
+
+        &.weibo {
+            color: #E6162D;
+        }
+
+        &.wikipedia {
+            color: #000000;
+        }
+
+        &.wordpress {
+            color: #21759B;
+        }
+
+        &.twitter {
+            color: #000000;
+        }
+
+        &.youtube {
+            color: #FF0000;
+        }
+    }
+}
