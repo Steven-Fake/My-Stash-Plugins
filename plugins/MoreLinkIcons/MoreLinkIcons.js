@@ -4,7 +4,7 @@
     var api = window.PluginApi;
     var { React, ReactDOM, libraries, patch, components } = api;
     var { faLink } = libraries.FontAwesomeSolid;
-    var customAssetPath = "./plugin/moreLinkIcons/assets/custom";
+    var customAssetPath = "./plugin/MoreLinkIcons/custom";
     var customDefinitionsPath = `${customAssetPath}/index.json`;
 
     // src/types/LinkDefinitions.ts
