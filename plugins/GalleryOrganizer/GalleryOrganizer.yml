@@ -1,0 +1,31 @@
+name: Gallery Organizer
+# requires: PythonDepManager
+description: My plugin to organize and auto compress gallery by my own rules.
+version: 1.0.0
+exec:
+  - python
+  - "{pluginDir}/main.py"
+interface: raw
+tasks:
+  - name: Add date for Galleries
+    description: Extract the date from the file path and add it to the metadata. / 从文件路径中提取日期并添加到元信息中
+    defaultArgs:
+      mode: galleries_date
+  - name: Add title for Galleries
+    description: Extract the title from the file path and add it to the metadata. / 从文件路径中提取标题并添加到元信息中
+    defaultArgs:
+      mode: galleries_title
+  - name: Add performers for Galleries
+    description: Extract performers from the file path and add it to the metadata. / 从文件路径中作者并添加到元信息中
+    defaultArgs:
+      mode: galleries_performers
+  - name: Add tags for Galleries
+    description: Extract tags from the file path and add it to the metadata. / 从文件路径中提取标签并添加到元信息中
+    defaultArgs:
+      mode: galleries_tags
+
+settings:
+  video_hwaccel:
+    displayName: HWACCEL Hardware
+    description: Input the hardware acceleration method to use for video transcode. You can only input "CPU", "QSV", "NVENC", "VAAPI". / 输入用于视频转码的硬件加速方法。您只能输入“CPU”、“QSV”、“NVENC”、“VAAPI”。
+    type: STRING

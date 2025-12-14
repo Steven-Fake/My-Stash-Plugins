@@ -1,0 +1,29 @@
+import json
+import sys
+
+from PythonDepManager import ensure_import
+
+from graphql import GraphQLUtils
+from teminal import TerminalUtils
+
+ensure_import("stashapi:stashapp-tools")
+
+if __name__ == "__main__":
+    info = json.loads(sys.stdin.read())
+    mode = info.get("args", {}).get("mode")
+
+    graphql_utils = GraphQLUtils(info.get("server_connection"))
+
+    terminal_utils = TerminalUtils()
+    config = graphql_utils.get_plugin_config()
+
+    if mode == "galleries_date":
+        graphql_utils.fill_galleries_date()
+    elif mode == "galleries_title":
+        graphql_utils.fill_galleries_title()
+    elif mode == "galleries_performers":
+        graphql_utils.add_galleries_performers()
+    elif mode == "galleries_tags":
+        graphql_utils.add_galleries_tags()
+    elif mode == "test":
+        paths = graphql_utils.get_galleries_paths()
