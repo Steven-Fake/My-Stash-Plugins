@@ -160,7 +160,7 @@ class GraphQLUtils:
                         tags_cache_map[name] = tag_resp.get("id")
                         curr_tag_map[name] = tag_resp.get("id")
 
-            self.client.update_gallery({"id": item.get("id"), "tag_ids": curr_tag_map.values()})
+            self.client.update_gallery({"id": item.get("id"), "tag_ids": list(curr_tag_map.values())})
 
     def get_galleries_paths(self) -> list[Path]:
         resp = self.client.get_configuration(

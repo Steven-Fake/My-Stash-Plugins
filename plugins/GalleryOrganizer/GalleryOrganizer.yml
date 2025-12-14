@@ -1,7 +1,7 @@
 name: Gallery Organizer
 # requires: PythonDepManager
 description: My plugin to organize and auto compress gallery by my own rules.
-version: 1.0.1
+version: 1.0.2
 exec:
   - python
   - "{pluginDir}/main.py"
