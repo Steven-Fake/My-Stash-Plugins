@@ -137,6 +137,7 @@ class GraphQLUtils:
             fragment="id title tags { id name aliases }"
         )
         tags_cache_map: dict[str, str] = {}  # tag_name: tag_id
+        unknown_tags: dict[str, int] = {}  # tag_name: count
 
         total = len(resp)
         if not quiet:
@@ -159,8 +160,12 @@ class GraphQLUtils:
                     if tag_resp and (name == tag_resp.get("name") or name in tag_resp.get("aliases", [])):
                         tags_cache_map[name] = tag_resp.get("id")
                         curr_tag_map[name] = tag_resp.get("id")
-
+                    else:
+                        unknown_tags[name] = unknown_tags.get(name, 0) + 1
             self.client.update_gallery({"id": item.get("id"), "tag_ids": list(curr_tag_map.values())})
+            if unknown_tags:
+                sorted_unknown = sorted(unknown_tags.items(), key=lambda kv: kv[1], reverse=True)
+                log.warning("Found unknown tags: %s", ", ".join(f"{k}:{v}" for k, v in sorted_unknown if v >= 5))
 
     def get_galleries_paths(self) -> list[Path]:
         resp = self.client.get_configuration(
