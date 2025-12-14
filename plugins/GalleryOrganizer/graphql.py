@@ -5,7 +5,7 @@ from stashapi.stashapp import StashInterface
 import re
 import stashapi.log as log
 from pathlib import Path
-from types import PluginConfig
+from my_types import PluginConfig
 
 
 def log_wrapper(func: Callable):
