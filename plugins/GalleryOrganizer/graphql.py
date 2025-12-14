@@ -165,7 +165,7 @@ class GraphQLUtils:
             self.client.update_gallery({"id": item.get("id"), "tag_ids": list(curr_tag_map.values())})
             if unknown_tags:
                 sorted_unknown = sorted(unknown_tags.items(), key=lambda kv: kv[1], reverse=True)
-                log.warning("\n".join([f"{k}: {v}" for k, v in sorted_unknown if v >= 5]))
+                log.warning(", ".join([k for k, v in sorted_unknown if v >= 5]))
 
     def get_galleries_paths(self) -> list[Path]:
         resp = self.client.get_configuration(
