@@ -4,7 +4,6 @@ import sys
 from PythonDepManager import ensure_import
 
 from graphql import GraphQLUtils
-from teminal import TerminalUtils
 
 ensure_import("stashapi:stashapp-tools")
 
@@ -13,9 +12,6 @@ if __name__ == "__main__":
     mode = info.get("args", {}).get("mode")
 
     graphql_utils = GraphQLUtils(info.get("server_connection"))
-
-    terminal_utils = TerminalUtils()
-    config = graphql_utils.get_plugin_config()
 
     if mode == "galleries_date":
         graphql_utils.fill_galleries_date()

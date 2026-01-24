@@ -1,11 +1,9 @@
-from collections.abc import Callable
-from typing import Literal
-
-from stashapi.stashapp import StashInterface
 import re
-import stashapi.log as log
+from collections.abc import Callable
 from pathlib import Path
-from my_types import PluginConfig
+
+import stashapi.log as log
+from stashapi.stashapp import StashInterface
 
 
 def log_wrapper(func: Callable):
@@ -24,19 +22,6 @@ def log_wrapper(func: Callable):
 class GraphQLUtils:
     def __init__(self, config: dict):
         self.client = StashInterface(config)
-
-    def get_plugin_config(self) -> PluginConfig:
-        resp = self.client.get_configuration(
-            fragment="plugins"
-        )
-        config: dict = resp.get("plugins", {}).get("GalleryOrganizer", {})
-        video_hwaccel: str = config.get("video_hwaccel", "CPU")
-        if video_hwaccel not in ["CPU", "NVENC", "QSV", "VAAPI"]:
-            video_hwaccel: Literal["CPU", "NVENC", "QSV", "VAAPI"] = "CPU"
-
-        return PluginConfig(
-            video_hwaccel=video_hwaccel
-        )
 
     @log_wrapper
     def fill_galleries_title(self, quiet: bool = False):
