@@ -1,5 +1,9 @@
 .idea/
 .vscode/
+.venv/
 *.iml
 
 PythonDepManager/
+.python-version
+pyproject.toml
+uv.lock

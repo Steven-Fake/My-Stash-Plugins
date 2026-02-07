@@ -26,14 +26,8 @@ class GraphQLUtils:
     @log_wrapper
     def fill_galleries_title(self, quiet: bool = False):
         resp = self.client.find_galleries(
-            f={
-                "title": {"value": "", "modifier": "IS_NULL"}
-            },
-            fragment="""
-                id
-                files { basename }
-                folder { path }
-                """
+            f={"title": {"value": "", "modifier": "IS_NULL"}},
+            fragment="id files { basename } folder { path }"
         )
         total = len(resp)
         if not quiet:
@@ -59,10 +53,7 @@ class GraphQLUtils:
                 "date": {"value": "", "modifier": "IS_NULL"},
                 "title": {"value": "\\d{4}\\.\\d{2}\\.\\d{2}", "modifier": "MATCHES_REGEX"}
             },
-            fragment="""
-            id
-            title
-            """
+            fragment="id title"
         )
         total = len(resp)
         if not quiet:
@@ -78,13 +69,8 @@ class GraphQLUtils:
     def add_galleries_performers(self, quiet: bool = False):
         self.fill_galleries_title(quiet=True)
         resp = self.client.find_galleries(
-            f={
-                "performer_count": {"value": 0, "modifier": "EQUALS"}
-            },
-            fragment="""
-                id
-                title
-                """
+            f={"performer_count": {"value": 0, "modifier": "EQUALS"}},
+            fragment="id title"
         )
         total = len(resp)
         if not quiet:
@@ -152,19 +138,27 @@ class GraphQLUtils:
             sorted_unknown = sorted(unknown_tags.items(), key=lambda kv: kv[1], reverse=True)
             log.warning(", ".join([k for k, v in sorted_unknown if v >= 2]))
 
-    def get_galleries_paths(self) -> list[Path]:
-        resp = self.client.get_configuration(
-            fragment="""
-            general {
-              stashes {
-                path
-                excludeVideo
-                excludeImage
-              }
-            }"""
+    @log_wrapper
+    def sort_jvid_galleries(self, quiet: bool = False) -> list[Path]:
+        resp = self.client.find_galleries(
+            f={
+                "title": {"value": "^\\[写真\\]JVID", "modifier": "MATCHES_REGEX"},
+            },
+            fragment="id title code"
         )
-        items = resp.get("general", {}).get("stashes", [])
-        return [
-            Path(item.get("path"))
-            for item in items if item.get("excludeImage") == False
-        ]
+
+        total = len(resp)
+        if not quiet:
+            log.info("Found {} JVID galleries to sort".format(total))
+        for i, item in enumerate(resp):
+            if not quiet:
+                log.progress(i / total)
+
+            title: str = item.get("title", "")
+            search_result = re.search(r"_([\w\d]+)_", title)
+            if not search_result:
+                continue
+            code = search_result.group(1)
+            url = f"https://www.jvid.com/v/{code}"
+
+            self.client.update_gallery({"id": item.get("id"), "code": code, "urls": [url]})

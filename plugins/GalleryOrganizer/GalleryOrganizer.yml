@@ -23,9 +23,7 @@ tasks:
     description: Extract tags from the file path and add it to the metadata. / 从文件路径中提取标签并添加到元信息中
     defaultArgs:
       mode: galleries_tags
-
-settings:
-  video_hwaccel:
-    displayName: HWACCEL Hardware
-    description: Input the hardware acceleration method to use for video transcode. You can only input "CPU", "QSV", "NVENC", "VAAPI". / 输入用于视频转码的硬件加速方法。您只能输入“CPU”、“QSV”、“NVENC”、“VAAPI”。
-    type: STRING
+  - name: Sort JVID Galleries
+    description: Sort JVID galleries by date. / 按日期排序JVID画廊
+    defaultArgs:
+      mode: sort_jvid_galleries

@@ -21,5 +21,6 @@ if __name__ == "__main__":
         graphql_utils.add_galleries_performers()
     elif mode == "galleries_tags":
         graphql_utils.add_galleries_tags()
-    elif mode == "test":
-        paths = graphql_utils.get_galleries_paths()
+
+    elif mode == "sort_jvid_galleries":
+        graphql_utils.sort_jvid_galleries()
