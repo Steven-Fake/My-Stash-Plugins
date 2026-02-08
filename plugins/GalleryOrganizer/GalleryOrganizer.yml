@@ -1,7 +1,7 @@
 name: Gallery Organizer
 # requires: PythonDepManager
 description: My plugin to organize and auto compress gallery by my own rules.
-version: 1.0.7
+version: 1.0.8
 exec:
   - python
   - "{pluginDir}/main.py"
@@ -23,7 +23,11 @@ tasks:
     description: Extract tags from the file path and add it to the metadata. / 从文件路径中提取标签并添加到元信息中
     defaultArgs:
       mode: galleries_tags
-  - name: Sort JVID Galleries
-    description: Sort JVID galleries by date. / 按日期排序JVID画廊
+  - name: Add metadata for JVID galleries
+    description: Add metadata for JVID galleries. / 为JVID相册添加元信息
     defaultArgs:
-      mode: sort_jvid_galleries
+      mode: add_jvid_metadata
+  - name: Add metadata for XIUREN series galleries
+    description: Add metadata for XIUREN series galleries. / 为XIUREN系列相册添加元信息
+    defaultArgs:
+      mode: add_xiuren_metadata

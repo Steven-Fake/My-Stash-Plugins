@@ -1,6 +1,7 @@
 import re
 from collections.abc import Callable
 from pathlib import Path
+from typing import Optional
 
 import stashapi.log as log
 from stashapi.stashapp import StashInterface
@@ -139,7 +140,7 @@ class GraphQLUtils:
             log.warning(", ".join([k for k, v in sorted_unknown if v >= 2]))
 
     @log_wrapper
-    def sort_jvid_galleries(self, quiet: bool = False) -> list[Path]:
+    def sort_jvid_galleries(self, quiet: bool = False):
         resp = self.client.find_galleries(
             f={
                 "title": {"value": "^\\[写真\\]JVID", "modifier": "MATCHES_REGEX"},
@@ -162,3 +163,31 @@ class GraphQLUtils:
             url = f"https://www.jvid.com/v/{code}"
 
             self.client.update_gallery({"id": item.get("id"), "code": code, "urls": [url]})
+
+    @log_wrapper
+    def sort_xiuren_series_galleries(self, quiet: bool = False):
+        uncensored_search = self.client.find_tags(f={"aliases": {"value": "Uncensored", "modifier": "EQUALS"}})
+        uncensored_tag_id: Optional[str] = uncensored_search[0].get("id") if uncensored_search else None
+
+        studios = [
+            "FEILIN", "HUAYANG", "IMISS", "MYGIRL", "XIAOYU", "XINGYAN", "XIUREN", "YOUMI"
+        ]
+        resp = self.client.find_galleries(
+            f={"title": {"value": f"^\\[写真\\]({'|'.join(studios)})", "modifier": "MATCHES_REGEX"}},
+            fragment="id title code"
+        )
+
+        total = len(resp)
+        if not quiet:
+            log.info("Found {} XIUREN series galleries to sort".format(total))
+        for i, item in enumerate(resp):
+            if not quiet:
+                log.progress(i / total)
+            title: str = item.get("title", "")
+            search_result = re.search(r"((Vol|No)\.\d+)", title)
+            if not search_result:
+                continue
+            code = search_result.group(1)
+            tag_ids = [uncensored_tag_id] if "Uncensored" in title and uncensored_tag_id else []
+
+            self.client.update_gallery({"id": item.get("id"), "code": code, "tag_ids": tag_ids})
