@@ -5,8 +5,11 @@ from PythonDepManager import ensure_import
 
 from graphql import GraphQLUtils
 
-ensure_import("stashapi:stashapp-tools")
-ensure_import("bs4:beautifulsoup4")
+try:
+    ensure_import("stashapi:stashapp-tools")
+    ensure_import("bs4:beautifulsoup4")
+except Exception as e:
+    print(f"Error installing dependencies: {e}")
 
 if __name__ == "__main__":
     info = json.loads(sys.stdin.read())
