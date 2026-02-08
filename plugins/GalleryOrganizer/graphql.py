@@ -140,7 +140,7 @@ class GraphQLUtils:
             log.warning(", ".join([k for k, v in sorted_unknown if v >= 2]))
 
     @log_wrapper
-    def sort_jvid_galleries(self, quiet: bool = False):
+    def add_jvid_metadata(self, quiet: bool = False):
         resp = self.client.find_galleries(
             f={
                 "title": {"value": "^\\[写真\\]JVID", "modifier": "MATCHES_REGEX"},
@@ -165,7 +165,7 @@ class GraphQLUtils:
             self.client.update_gallery({"id": item.get("id"), "code": code, "urls": [url]})
 
     @log_wrapper
-    def sort_xiuren_series_galleries(self, quiet: bool = False):
+    def add_xiuren_metadata(self, quiet: bool = False):
         uncensored_search = self.client.find_tags(f={"aliases": {"value": "Uncensored", "modifier": "EQUALS"}})
         uncensored_tag_id: Optional[str] = uncensored_search[0].get("id") if uncensored_search else None
 

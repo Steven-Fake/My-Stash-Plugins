@@ -25,6 +25,7 @@ if __name__ == "__main__":
         graphql_utils.add_galleries_performers()
     elif mode == "galleries_tags":
         graphql_utils.add_galleries_tags()
-
-    elif mode == "sort_jvid_galleries":
-        graphql_utils.sort_jvid_galleries()
+    elif mode == "add_jvid_metadata":
+        graphql_utils.add_jvid_metadata()
+    elif mode == "add_xiuren_metadata":
+        graphql_utils.add_xiuren_metadata()
