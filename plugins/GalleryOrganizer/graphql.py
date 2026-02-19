@@ -94,11 +94,15 @@ class GraphQLUtils:
     @log_wrapper
     def add_galleries_tags(self, quiet: bool = False):
         def extract_tags_from_title(title: str) -> list[str]:
-            category = re.search(r'\[.+\]', title).group()[1:-1]
-            tags = []
-            for part in title.removeprefix(f"[{category}]").split("_")[:-1]:
-                tags.extend([tag.strip() for tag in part.split(",")])
-            return [category] + tags
+            try:
+                category = re.search(r'\[.+\]', title).group()[1:-1]
+                tags = []
+                for part in title.removeprefix(f"[{category}]").split("_")[:-1]:
+                    tags.extend([tag.strip() for tag in part.split(",")])
+                return [category] + tags
+            except Exception as e:
+                log.warning(f'Extract category from "{title}" Failed.')
+                return []
 
         self.fill_galleries_title(quiet=True)
         resp = self.client.find_galleries(
