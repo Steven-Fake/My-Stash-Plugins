@@ -168,6 +168,11 @@ body a {
       }
     }
   }
+
+  &.job-table {
+    background-color: var(--color-cod-gray);
+    color: var(--color-text);
+  }
 }
 
 .bg-secondary {
@@ -278,10 +283,14 @@ input[type="range"]::-moz-range-thumb {
 }
 
 div.react-select__control {
-  background-color: hsl(0deg 0% 39.2% / 0.4);
-  border-color: #394b59;
-  color: #182026;
+  background-color: var(--color-cod-gray);
+  border-color: var(--color-dim);
+  color: var(--color-text-dim);
   cursor: pointer;
+}
+
+div.react-select__menu {
+  background-color: var(--color-dim);
 }
 
 .navbar-nav a,
@@ -944,6 +953,14 @@ a {
   }
 }
 
+.modal-dialog .modal-body {
+  height: 400px;
+
+  .dialog-container {
+    height: 100%;
+  }
+}
+
 .btn,
 .btn-primary,
 .btn-secondary {
@@ -1067,5 +1084,9 @@ h2 {
       z-index: 10;
       background-color: var(--color-cod-gray);
     }
+  }
+
+  .modal-dialog .modal-body {
+    height: 80dvh;
   }
 }
