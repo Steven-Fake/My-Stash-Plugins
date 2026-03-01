@@ -153,6 +153,21 @@ body a {
     0 0 0 rgb(16 22 26 / 0),
     0 0 0 rgb(16 22 26 / 0);
   padding: 20px;
+
+  .package-manager {
+    input.clearable-text-field {
+      background-color: var(--color-dim);
+    }
+
+    table.table {
+      border-radius: 4px;
+      overflow: hidden;
+
+      thead {
+        background-color: var(--color-dim);
+      }
+    }
+  }
 }
 
 .bg-secondary {
@@ -385,11 +400,6 @@ body {
   background: var(--color-black) !important;
 }
 
-.card {
-  background: var(--color-black) !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-}
 
 /* .btn-primary {
   color: #fff;
