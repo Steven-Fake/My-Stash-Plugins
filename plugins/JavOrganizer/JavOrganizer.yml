@@ -1,0 +1,17 @@
+name: Jav Organizer
+# requires: PythonDepManager
+description: A plugin to organize some scenes by my own rules.
+version: 1.0.1
+exec:
+  - python
+  - "{pluginDir}/main.py"
+interface: raw
+tasks:
+  - name: Add date for Scenes
+    description: Extract the date from the file path and add it to the metadata. / 从文件路径中提取日期并添加到元信息中
+    defaultArgs:
+      mode: scenes_date
+  - name: Add title for Scenes
+    description: Extract the title from the file path and add it to the metadata. / 从文件路径中提取标题并添加到元信息中
+    defaultArgs:
+      mode: scenes_title

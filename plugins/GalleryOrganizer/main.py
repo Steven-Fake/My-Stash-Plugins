@@ -17,10 +17,10 @@ if __name__ == "__main__":
 
     graphql_utils = GraphQLUtils(info.get("server_connection"))
 
-    if mode == "galleries_date":
-        graphql_utils.fill_galleries_date()
-    elif mode == "galleries_title":
+    if mode == "galleries_title":
         graphql_utils.fill_galleries_title()
+    elif mode == "galleries_date":
+        graphql_utils.fill_galleries_date()
     elif mode == "galleries_performers":
         graphql_utils.add_galleries_performers()
     elif mode == "galleries_tags":

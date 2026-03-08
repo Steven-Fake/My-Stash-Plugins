@@ -174,7 +174,7 @@ class GraphQLUtils:
         uncensored_tag_id: Optional[str] = uncensored_search[0].get("id") if uncensored_search else None
 
         studios = [
-            "FEILIN", "HUAYANG", "IMISS", "MYGIRL", "XIAOYU", "XINGYAN", "XIUREN", "YOUMI"
+            "FEILIN", "HUAYANG", "IMISS", "MYGIRL", "XIAOYU", "XINGYAN", "XIUREN", "YOUMI", "TUIGIRL", "UGIRL"
         ]
         resp = self.client.find_galleries(
             f={"title": {"value": f"^\\[写真\\]({'|'.join(studios)})", "modifier": "MATCHES_REGEX"}},
