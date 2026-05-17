@@ -1,7 +1,7 @@
 name: Gallery Organizer
 # requires: PythonDepManager
 description: A plugin to organize some galleries by my own rules.
-version: 1.0.10
+version: 1.0.11
 exec:
   - python
   - "{pluginDir}/main.py"
