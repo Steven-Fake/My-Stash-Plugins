@@ -52,7 +52,10 @@ class GraphQLUtils:
         resp = self.client.find_galleries(
             f={
                 "date": {"value": "", "modifier": "IS_NULL"},
-                "title": {"value": "\\d{4}\\.\\d{2}\\.\\d{2}", "modifier": "MATCHES_REGEX"}
+                "title": {
+                    "value": '\\d{4}([-.])(0[1-9]|1[0-2])(?:(0[1-9]|[12]\\d|3[01]))?',
+                    "modifier": "MATCHES_REGEX"
+                }
             },
             fragment="id title"
         )
@@ -62,9 +65,11 @@ class GraphQLUtils:
         for i, item in enumerate(resp):
             if not quiet:
                 log.progress(i / total)
-            date = re.search(r"\d{4}\.\d{2}\.\d{2}", item.get("title")).group()
-            date = date.replace(".", "-")
-            self.client.update_gallery({"id": item.get("id"), "date": date})
+            date_match = re.search("\\d{4}([-.])(0[1-9]|1[0-2])(?:(0[1-9]|[12]\\d|3[01]))?", item.get("title"))
+            if date_match:
+                date_str = date_match.group()
+                date = date_str.replace(".", "-")
+                self.client.update_gallery({"id": item.get("id"), "date": date})
 
     @log_wrapper
     def add_galleries_performers(self, quiet: bool = False):
