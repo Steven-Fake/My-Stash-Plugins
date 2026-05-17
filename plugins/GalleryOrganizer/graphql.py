@@ -65,7 +65,7 @@ class GraphQLUtils:
         for i, item in enumerate(resp):
             if not quiet:
                 log.progress(i / total)
-            date_match = re.search("\\d{4}([-.])(0[1-9]|1[0-2])(?:(0[1-9]|[12]\\d|3[01]))?", item.get("title"))
+            date_match = re.search(r"\d{4}([-.])(0[1-9]|1[0-2])(?:([-.])?(0[1-9]|[12]\d|3[01]))?", item.get("title"))
             if date_match:
                 date_str = date_match.group()
                 date = date_str.replace(".", "-")
