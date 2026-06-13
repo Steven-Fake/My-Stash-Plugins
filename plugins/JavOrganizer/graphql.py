@@ -1,4 +1,3 @@
-import re
 from collections.abc import Callable
 
 import stashapi.log as log
@@ -23,42 +22,47 @@ class GraphQLUtils:
         self.client = StashInterface(config)
 
     @log_wrapper
-    def fill_scenes_title(self, quiet: bool = False):
-        resp = self.client.find_scenes(
-            f={"title": {"value": "", "modifier": "IS_NULL"}},
-            fragment="id files { basename }"
+    def fill_jav_tags(self, quiet: bool = False):
+        uncensored_search = self.client.find_tags(
+            f={"aliases": {"value": "Uncensored", "modifier": "EQUALS"}}
         )
-        total = len(resp)
-        if not quiet:
-            log.info("Found {} scenes without title".format(total))
-        for i, item in enumerate(resp):
-            if not quiet:
-                log.progress(i / total)
-            scene_id: str = item.get("id")
-            for file_info in item.get("files", []):
-                if filename := file_info.get("basename", ""):
-                    title = filename[:filename.rindex('.')]
-                    break
-            else:
-                continue
-            self.client.update_scene({"id": scene_id, "title": title})
+        uncensored_crack_search = self.client.find_tags(
+            f={"aliases": {"value": "Uncensored Crack", "modifier": "EQUALS"}}
+        )
+        censored_search = self.client.find_tags(
+            f={"aliases": {"value": "Censored", "modifier": "EQUALS"}}
+        )
 
-    @log_wrapper
-    def fill_scenes_date(self, quiet: bool = False):
-        self.fill_scenes_title(quiet=True)
+        uncensored_tag_id = uncensored_search[0].get("id") if uncensored_search else None
+        uncensored_crack_tag_id = uncensored_crack_search[0].get("id") if uncensored_crack_search else None
+        censored_tag_id = censored_search[0].get("id") if censored_search else None
+        if not (uncensored_tag_id and uncensored_crack_tag_id and censored_tag_id):
+            log.warning("No related tags found")
+            return
+
         resp = self.client.find_scenes(
-            f={
-                "date": {"value": "", "modifier": "IS_NULL"},
-                "title": {"value": "\\d{4}\\.\\d{2}\\.\\d{2}", "modifier": "MATCHES_REGEX"}
-            },
-            fragment="id title"
+            f={"path": {"value": "/Jav/", "modifier": "INCLUDES"}},
+            fragment="id files { basename } tags { id }"
         )
+
         total = len(resp)
         if not quiet:
-            log.info("Found {} scenes without date".format(total))
+            log.info("Found {} Jav to add tags".format(total))
         for i, item in enumerate(resp):
             if not quiet:
                 log.progress(i / total)
-            date = re.search(r"\d{4}\.\d{2}\.\d{2}", item.get("title")).group()
-            date = date.replace(".", "-")
-            self.client.update_scene({"id": item.get("id"), "date": date})
+            name: str = item.get("files")[0].get("basename").split(".")[0]
+            old_tags = [t.get("id") for t in item.get("tags")]
+            if name.endswith("-UC-C") or name.endswith("-UC"):
+                old_tags.remove(uncensored_tag_id)
+                old_tags.remove(censored_tag_id)
+                old_tags.append(uncensored_crack_tag_id)
+            elif name.endswith("-U-C") or name.endswith("-U"):
+                old_tags.remove(uncensored_crack_tag_id)
+                old_tags.remove(censored_tag_id)
+                old_tags.append(uncensored_tag_id)
+            else:
+                old_tags.remove(uncensored_crack_tag_id)
+                old_tags.remove(uncensored_tag_id)
+                old_tags.append(censored_tag_id)
+            self.client.update_scene({"id": item.get("id"), "tag_ids": old_tags})

@@ -16,7 +16,5 @@ if __name__ == "__main__":
 
     graphql_utils = GraphQLUtils(info.get("server_connection"))
 
-    if mode == "scenes_title":
-        graphql_utils.fill_scenes_title()
-    elif mode == "scenes_date":
-        graphql_utils.fill_scenes_date()
+    if mode == "jav_tags":
+        graphql_utils.fill_jav_tags()
