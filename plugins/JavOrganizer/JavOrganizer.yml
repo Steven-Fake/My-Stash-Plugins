@@ -1,7 +1,7 @@
 name: Jav Organizer
 # requires: PythonDepManager
 description: A plugin to organize some scenes by my own rules.
-version: 1.0.1
+version: 1.0.2
 exec:
   - python
   - "{pluginDir}/main.py"

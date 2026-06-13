@@ -54,15 +54,12 @@ class GraphQLUtils:
             name: str = item.get("files")[0].get("basename").split(".")[0]
             old_tags = [t.get("id") for t in item.get("tags")]
             if name.endswith("-UC-C") or name.endswith("-UC"):
-                old_tags.remove(uncensored_tag_id)
-                old_tags.remove(censored_tag_id)
-                old_tags.append(uncensored_crack_tag_id)
+                if uncensored_crack_tag_id not in old_tags:
+                    old_tags.append(uncensored_crack_tag_id)
             elif name.endswith("-U-C") or name.endswith("-U"):
-                old_tags.remove(uncensored_crack_tag_id)
-                old_tags.remove(censored_tag_id)
-                old_tags.append(uncensored_tag_id)
+                if uncensored_tag_id not in old_tags:
+                    old_tags.append(uncensored_tag_id)
             else:
-                old_tags.remove(uncensored_crack_tag_id)
-                old_tags.remove(uncensored_tag_id)
-                old_tags.append(censored_tag_id)
+                if censored_tag_id not in old_tags:
+                    old_tags.append(censored_tag_id)
             self.client.update_scene({"id": item.get("id"), "tag_ids": old_tags})
