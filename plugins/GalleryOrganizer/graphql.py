@@ -11,10 +11,10 @@ def log_wrapper(func: Callable):
     def wrapper(*args, **kwargs):
         quiet = kwargs.get("quiet", False)
         if not quiet:
-            log.info(f"Starting {func.__name__.replace("_", " ").capitalize()}...")
+            log.info(f"Starting {func.__name__.replace('_', ' ').capitalize()}...")
         result = func(*args, **kwargs)
         if not quiet:
-            log.info(f"Completed {func.__name__.replace("_", " ").capitalize()}.")
+            log.info(f"Completed {func.__name__.replace('_', ' ').capitalize()}.")
         return result
 
     return wrapper
@@ -28,7 +28,7 @@ class GraphQLUtils:
     def fill_galleries_title(self, quiet: bool = False):
         resp = self.client.find_galleries(
             f={"title": {"value": "", "modifier": "IS_NULL"}},
-            fragment="id files { basename } folder { path }"
+            fragment="id files { basename } folder { path }",
         )
         total = len(resp)
         if not quiet:
@@ -41,7 +41,7 @@ class GraphQLUtils:
                 title = Path(item.get("folder").get("path")).name
             elif len(item.get("files", [])) > 0:
                 zip_name = item.get("files", [])[0].get("basename", "")
-                title = zip_name[:zip_name.rindex('.')]
+                title = zip_name[: zip_name.rindex(".")]
             else:
                 continue
             self.client.update_gallery({"id": gallery_id, "title": title})
@@ -53,11 +53,11 @@ class GraphQLUtils:
             f={
                 "date": {"value": "", "modifier": "IS_NULL"},
                 "title": {
-                    "value": '\\d{4}([-.])(0[1-9]|1[0-2])(?:(0[1-9]|[12]\\d|3[01]))?',
-                    "modifier": "MATCHES_REGEX"
-                }
+                    "value": "\\d{4}([-.])(0[1-9]|1[0-2])(?:(0[1-9]|[12]\\d|3[01]))?",
+                    "modifier": "MATCHES_REGEX",
+                },
             },
-            fragment="id title"
+            fragment="id title",
         )
         total = len(resp)
         if not quiet:
@@ -65,7 +65,10 @@ class GraphQLUtils:
         for i, item in enumerate(resp):
             if not quiet:
                 log.progress(i / total)
-            date_match = re.search(r"\d{4}([-.])(0[1-9]|1[0-2])(?:([-.])?(0[1-9]|[12]\d|3[01]))?", item.get("title"))
+            date_match = re.search(
+                r"\d{4}([-.])(0[1-9]|1[0-2])(?:([-.])?(0[1-9]|[12]\d|3[01]))?",
+                item.get("title"),
+            )
             if date_match:
                 date_str = date_match.group()
                 date = date_str.replace(".", "-")
@@ -76,7 +79,7 @@ class GraphQLUtils:
         self.fill_galleries_title(quiet=True)
         resp = self.client.find_galleries(
             f={"performer_count": {"value": 0, "modifier": "EQUALS"}},
-            fragment="id title"
+            fragment="id title",
         )
         total = len(resp)
         if not quiet:
@@ -85,68 +88,24 @@ class GraphQLUtils:
             if not quiet:
                 log.progress(i / total)
             gallery_id: str = item.get("id")
-            performer_names = [name.strip() for name in item.get("title").split("_")[-1].split(",")]
+            performer_names = [
+                name.strip() for name in item.get("title").split("_")[-1].split(",")
+            ]
             performer_ids = []
             for name in performer_names:
-                performer_resp = self.client.find_performers(q=name, fragment="""id name alias_list""")
+                performer_resp = self.client.find_performers(
+                    q=name, fragment="""id name alias_list"""
+                )
                 if performer_resp:
                     for performer in performer_resp:
-                        if name == performer.get("name") or name in performer.get("alias_list", []):
+                        if name == performer.get("name") or name in performer.get(
+                            "alias_list", []
+                        ):
                             performer_ids.append(performer.get("id"))
             if performer_ids:
-                self.client.update_gallery({"id": gallery_id, "performer_ids": performer_ids})
-
-    @log_wrapper
-    def add_galleries_tags(self, quiet: bool = False):
-        def extract_tags_from_title(title: str) -> list[str]:
-            try:
-                category = re.search(r'\[.+\]', title).group()[1:-1]
-                tags = []
-                for part in title.removeprefix(f"[{category}]").split("_")[:-1]:
-                    tags.extend([tag.strip() for tag in part.split(",")])
-                return [category] + tags
-            except Exception as e:
-                log.warning(f'Extract category from "{title}" Failed.')
-                return []
-
-        self.fill_galleries_title(quiet=True)
-        resp = self.client.find_galleries(
-            f={
-                "title": {"value": "^\\[(杂图|写真)\\]", "modifier": "NOT_MATCHES_REGEX"},
-                "tag_count": {"value": 2, "modifier": "LESS_THAN"},
-            },
-            fragment="id title tags { id name aliases }"
-        )
-        tags_cache_map: dict[str, str] = {}  # tag_name: tag_id
-        unknown_tags: dict[str, int] = {}  # tag_name: count
-
-        total = len(resp)
-        if not quiet:
-            log.info("Found {} galleries to add tags".format(total))
-        for i, item in enumerate(resp):
-            if not quiet:
-                log.progress(i / total)
-
-            title: str = item.get("title", "")
-            for tag in item.get("tags", []):  # update cache
-                tags_cache_map[tag.get("name")] = tag.get("id")
-
-            curr_tag_map = {}
-            tag_names = extract_tags_from_title(title)
-            for name in tag_names:
-                if name in tags_cache_map.keys():
-                    curr_tag_map[name] = tags_cache_map[name]
-                else:  # from database
-                    tag_resp = self.client.find_tag(name, fragment="id name aliases")
-                    if tag_resp and (name == tag_resp.get("name") or name in tag_resp.get("aliases", [])):
-                        tags_cache_map[name] = tag_resp.get("id")
-                        curr_tag_map[name] = tag_resp.get("id")
-                    else:
-                        unknown_tags[name] = unknown_tags.get(name, 0) + 1
-            self.client.update_gallery({"id": item.get("id"), "tag_ids": list(curr_tag_map.values())})
-        if unknown_tags:
-            sorted_unknown = sorted(unknown_tags.items(), key=lambda kv: kv[1], reverse=True)
-            log.warning(", ".join([k for k, v in sorted_unknown if v >= 2]))
+                self.client.update_gallery(
+                    {"id": gallery_id, "performer_ids": performer_ids}
+                )
 
     @log_wrapper
     def add_jvid_metadata(self, quiet: bool = False):
@@ -154,7 +113,7 @@ class GraphQLUtils:
             f={
                 "title": {"value": "^\\[写真\\]JVID", "modifier": "MATCHES_REGEX"},
             },
-            fragment="id title code"
+            fragment="id title code",
         )
 
         total = len(resp)
@@ -171,19 +130,39 @@ class GraphQLUtils:
             code = search_result.group(1)
             url = f"https://www.jvid.com/v/{code}"
 
-            self.client.update_gallery({"id": item.get("id"), "code": code, "urls": [url]})
+            self.client.update_gallery(
+                {"id": item.get("id"), "code": code, "urls": [url]}
+            )
 
     @log_wrapper
-    def add_xiuren_metadata(self, quiet: bool = False):
-        uncensored_search = self.client.find_tags(f={"aliases": {"value": "Uncensored", "modifier": "EQUALS"}})
-        uncensored_tag_id: Optional[str] = uncensored_search[0].get("id") if uncensored_search else None
+    def add_xiuren_series_metadata(self, quiet: bool = False):
+        uncensored_search = self.client.find_tags(
+            f={"aliases": {"value": "Uncensored", "modifier": "EQUALS"}}
+        )
+        uncensored_tag_id: Optional[str] = (
+            uncensored_search[0].get("id") if uncensored_search else None
+        )
 
         studios = [
-            "FEILIN", "HUAYANG", "IMISS", "MYGIRL", "XIAOYU", "XINGYAN", "XIUREN", "YOUMI", "TUIGIRL", "UGIRL"
+            "FEILIN",
+            "HUAYANG",
+            "IMISS",
+            "MYGIRL",
+            "XIAOYU",
+            "XINGYAN",
+            "XIUREN",
+            "YOUMI",
+            "TUIGIRL",
+            "UGIRL",
         ]
         resp = self.client.find_galleries(
-            f={"title": {"value": f"^\\[写真\\]({'|'.join(studios)})", "modifier": "MATCHES_REGEX"}},
-            fragment="id title code"
+            f={
+                "title": {
+                    "value": f"^\\[写真\\]({'|'.join(studios)})",
+                    "modifier": "MATCHES_REGEX",
+                }
+            },
+            fragment="id title code",
         )
 
         total = len(resp)
@@ -197,6 +176,12 @@ class GraphQLUtils:
             if not search_result:
                 continue
             code = search_result.group(1)
-            tag_ids = [uncensored_tag_id] if "Uncensored" in title and uncensored_tag_id else []
+            tag_ids = (
+                [uncensored_tag_id]
+                if "Uncensored" in title and uncensored_tag_id
+                else []
+            )
 
-            self.client.update_gallery({"id": item.get("id"), "code": code, "tag_ids": tag_ids})
+            self.client.update_gallery(
+                {"id": item.get("id"), "code": code, "tag_ids": tag_ids}
+            )

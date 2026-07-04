@@ -1,0 +1,13 @@
+name: Cosplay Organizer
+# requires: PythonDepManager
+description: A plugin to organize some cosplay galleries by my own rules.
+version: 1.0.0
+exec:
+  - python
+  - "{pluginDir}/main.py"
+interface: raw
+tasks:
+  - name: Format cosplay tags
+    description: Format cosplay tags in my rules. / 整理全部的Cosplay标签
+    defaultArgs:
+      mode: format_cosplay_tags
