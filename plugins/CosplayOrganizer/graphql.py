@@ -1,6 +1,5 @@
 from collections.abc import Callable
-from typing import Literal
-from tqdm import tqdm
+
 import stashapi.log as log
 from stashapi.stashapp import StashInterface
 
@@ -60,7 +59,9 @@ class GraphQLUtils:
         if not root_tag_resp or len(root_tag_resp) < 0:
             return
         categories: list = root_tag_resp[0].get("children")
-        for category in tqdm(categories):  # type: dict[Literal["id", "name"], str]
+        total = len(categories)
+        for i, category in enumerate(categories):
+            log.progress(i / total)
             category_id = category.get("id")
             category_name = category.get("name")
             if not category_id or not category_name:
