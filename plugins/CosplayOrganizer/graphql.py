@@ -36,8 +36,7 @@ class GraphQLUtils:
             "sort_name": sort_name,
             "aliases": aliases,
         }
-        if len(aliases) < len(prefix):
-            self.client.update_tag(new_tag)
+        self.client.update_tag(new_tag)
 
         children = (
             self.client.find_tag(
