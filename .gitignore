@@ -7,3 +7,5 @@ PythonDepManager/
 .python-version
 pyproject.toml
 uv.lock
+
+*.pyc

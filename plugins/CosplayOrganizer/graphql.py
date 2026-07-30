@@ -25,10 +25,19 @@ class GraphQLUtils:
         """rec sort"""
         prefix.append(tag.get("name"))
         sort_name = f"[{category_name}]{'_'.join(prefix)}"
-        aliases = [
-            "_".join(prefix[-1 * length + 1 :]) for length in range(1, len(prefix))
+        # path suffixes from leaf up to the full path: c, b_c, a_b_c
+        computed = [
+            "_".join(prefix[-length:]) for length in range(1, len(prefix) + 1)
         ]
-        aliases.append(sort_name)
+        computed.append(sort_name)
+
+        current = self.client.find_tag(
+            tag_in=int(tag.get("id")),
+            fragment="id aliases children { id name sort_name }",
+        )
+        # keep aliases that already existed (e.g. manually added) and merge
+        existing_aliases = current.get("aliases") or []
+        aliases = list(dict.fromkeys([*existing_aliases, *computed]))
 
         new_tag = {
             "id": int(tag.get("id")),
@@ -38,15 +47,12 @@ class GraphQLUtils:
         }
         self.client.update_tag(new_tag)
 
-        children = (
-            self.client.find_tag(
-                tag_in=int(tag.get("id")),
-                fragment="children { id name sort_name }",
-            ).get("children")
-            or []
-        )
-        for child in children:
-            self.format_tag(tag=child, category_name=category_name, prefix=prefix)
+        children = current.get("children") or []
+        try:
+            for child in children:
+                self.format_tag(tag=child, category_name=category_name, prefix=prefix)
+        finally:
+            prefix.pop()
 
     @log_wrapper
     def format_cosplay_tags(self, quiet: bool = False):
@@ -55,9 +61,9 @@ class GraphQLUtils:
             f={"name": {"value": "(Category) ACGN", "modifier": "EQUALS"}},
             fragment="id name children { id  name}",
         )
-        if not root_tag_resp or len(root_tag_resp) < 0:
+        if not root_tag_resp:
             return
-        categories: list = root_tag_resp[0].get("children")
+        categories: list = root_tag_resp[0].get("children") or []
         total = len(categories)
         for i, category in enumerate(categories):
             log.progress(i / total)

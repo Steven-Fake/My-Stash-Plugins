@@ -62,7 +62,7 @@
     },
     {
         "name": "gallery-epic",
-        "icon": "gallery-epic.png",
+        "icon": "gallery-epic.svg",
         "addresses": [
             "galleryepic.com"
         ]
