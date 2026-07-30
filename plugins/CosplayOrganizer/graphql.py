@@ -23,11 +23,13 @@ class GraphQLUtils:
 
     def format_tag(self, tag: dict, category_name: str, prefix: list[str]):
         """rec sort"""
-        prefix.append(tag.get("name"))
+        name = tag.get("name")
+        prefix.append(name)
         sort_name = f"[{category_name}]{'_'.join(prefix)}"
-        # path suffixes from leaf up to the full path: c, b_c, a_b_c
+        # path suffixes from leaf up to the full path, skipping the leaf itself
+        # (it equals `name` and must not become an alias): b_c, a_b_c
         computed = [
-            "_".join(prefix[-length:]) for length in range(1, len(prefix) + 1)
+            "_".join(prefix[-length:]) for length in range(2, len(prefix) + 1)
         ]
         computed.append(sort_name)
 
@@ -35,9 +37,11 @@ class GraphQLUtils:
             tag_in=int(tag.get("id")),
             fragment="id aliases children { id name sort_name }",
         )
-        # keep aliases that already existed (e.g. manually added) and merge
+        # keep aliases that already existed (e.g. manually added) and merge,
+        # but never let the tag's own name end up as an alias
         existing_aliases = current.get("aliases") or []
         aliases = list(dict.fromkeys([*existing_aliases, *computed]))
+        aliases = [a for a in aliases if a != name]
 
         new_tag = {
             "id": int(tag.get("id")),
