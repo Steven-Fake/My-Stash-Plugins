@@ -44,7 +44,7 @@
         }
 
         &.gallery-epic {
-            color: unset;
+            color: #FFFFFF;
         }
 
         &.imdb {
@@ -65,6 +65,10 @@
 
         &.patreon {
             color: #000000;
+        }
+
+        &.pixiv {
+            color: #0096FA;
         }
 
         &.pornhub {

@@ -103,6 +103,13 @@
         ]
     },
     {
+        "name": "pixiv",
+        "icon": "pixiv.svg",
+        "addresses": [
+            "pixiv.net"
+        ]
+    },
+    {
         "name": "pornhub",
         "icon": "pornhub.svg",
         "addresses": [
