@@ -15,6 +15,12 @@
         "regex": "^https?:\/\/space.bilibili.com\/(.*?)\/?"
     },
     {
+        "name": "bittorrent",
+        "icon": "qbittorrent.svg",
+        "addresses": [],
+        "regex": "^magnet:\/\/.+"
+    },
+    {
         "name": "bluesky",
         "icon": "bluesky.svg",
         "addresses": [
